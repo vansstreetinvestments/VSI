@@ -1,0 +1,359 @@
+/* =========================================================================
+   VSI — Quantitative Mathematics & High-Frequency Probability Models
+   Premium Minimalist Stylesheet: Editorial Clarity, Hairline Borders, Zero Neon
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #090a0d;
+  --bg-surface: #0e1017;
+  --bg-card: rgba(16, 19, 28, 0.6);
+  --bg-card-hover: rgba(22, 26, 38, 0.8);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(255, 255, 255, 0.16);
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --accent-zinc: #e4e4e7;
+  --accent-blue: #93c5fd;
+  --accent-emerald: #6ee7b7;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Space Grotesk', -apple-system, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Minimalist Editorial Background */
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+/* Subtle Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* Typography Utilities */
+.font-display { font-family: var(--font-display); }
+.font-serif { font-family: var(--font-serif); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Minimalist Institutional Header Bar */
+.institutional-bar {
+  background: #06070a;
+  border-bottom: 1px solid var(--border-subtle);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Clean Specular Glass Panels — ZERO NEON */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.glass-panel:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+}
+
+/* Clean Mathematical Blocks */
+.math-block {
+  background: #06070a;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 1.15rem 1.4rem;
+  margin: 1.15rem 0;
+  overflow-x: auto;
+  position: relative;
+  transition: border-color 0.2s ease;
+}
+
+.math-block:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.math-block:hover .copy-math-btn {
+  opacity: 1;
+}
+
+.copy-math-btn {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  border-radius: 5px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.15s ease;
+}
+
+.copy-math-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* KaTeX Formula Crispness */
+.katex {
+  font-size: 1.06em;
+  color: #f4f4f5;
+  letter-spacing: 0.01em;
+}
+.katex-display {
+  margin: 0.5em 0 !important;
+}
+
+/* Simulator Canvas Container — Crisp & Minimalist */
+.sim-canvas-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #050608;
+}
+
+.sim-canvas {
+  width: 100%;
+  height: 310px;
+  display: block;
+  cursor: crosshair;
+}
+
+.sim-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(14, 16, 23, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 5px;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #f4f4f5;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 10;
+}
+
+/* Card Mini-Graph Container — Minimalist Academic Data Visualization */
+.card-graph-wrap {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  background: #050608;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  margin-top: 14px;
+  overflow: hidden;
+}
+
+.card-graph-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Minimalist Range Sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #e4e4e7;
+  cursor: pointer;
+  border: 2px solid #090a0d;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: #ffffff;
+}
+
+/* Subtle Pill Buttons */
+.preset-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.preset-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Understated Quant CLI Terminal */
+#quant-terminal {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 500px;
+  max-width: calc(100vw - 48px);
+  background: #08090d;
+  border: 1px solid var(--border-hover);
+  border-radius: 10px;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease;
+}
+
+#quant-terminal.terminal-collapsed {
+  transform: translateY(calc(100% + 40px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.terminal-header {
+  background: #0c0e14;
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.terminal-body {
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  height: 200px;
+  overflow-y: auto;
+  color: #a1a1aa;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.terminal-input-wrap {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: #050608;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.terminal-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: #f4f4f5;
+}
+
+/* Terminal Floating Action Button */
+.terminal-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #0f121a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #d4d4d8;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  z-index: 49;
+  transition: all 0.15s ease;
+}
+.terminal-fab:hover {
+  background: #181c28;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* Understated Status Dot */
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #71717a;
+}
+
+/* Subtle Code Tag */
+.code-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  color: #d4d4d8;
+}

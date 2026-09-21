@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VSI — Quantitative Mathematics & High-Frequency Probability Models</title>
+  <meta name="description" content="An authoritative, mathematically rigorous compendium of High-Frequency Trading (HFT) mathematics, market microstructure, stochastic calculus, optimal execution, and probability models.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- KaTeX CSS and JS for Mathematical Typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Minimalist Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            zinc: {
+              850: '#141419',
+              900: '#0e1017',
+              950: '#090a0d'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#090a0d] text-zinc-100 min-h-screen selection:bg-zinc-700 selection:text-white relative">
+
+  <!-- Ambient Minimalist Coordinate Grid Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- INSTITUTIONAL STATUS BAR -->
+  <div class="institutional-bar py-1.5 px-4 sm:px-8 border-b border-white/5 flex items-center justify-between text-[11px] font-mono text-zinc-400">
+    <div class="flex items-center space-x-4 overflow-x-auto whitespace-nowrap">
+      <span class="flex items-center space-x-1.5">
+        <span class="status-dot"></span>
+        <span class="text-zinc-300 font-medium">VSI Institute for Stochastic Intelligence</span>
+      </span>
+      <span>|</span>
+      <span>Domain: Continuous Limit Order Book Dynamics</span>
+      <span class="hidden md:inline">|</span>
+      <span class="hidden md:inline">Framework: Martingale Pricing & Viscosity Solutions</span>
+      <span class="hidden md:inline">|</span>
+      <span class="hidden md:inline">Architecture: Deterministic Discrete Event Systems</span>
+    </div>
+    <div class="hidden sm:flex items-center space-x-3 text-zinc-400">
+      <span>Series: Research Monographs</span>
+    </div>
+  </div>
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 bg-[#090a0d]/90 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center space-x-3 group">
+        <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700 flex items-center justify-center text-zinc-200">
+          <svg class="w-4 h-4" viewBox="0 0 100 100" fill="none">
+            <path d="M20 30L40 70L55 45L70 70L80 50" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-display font-bold text-lg tracking-tight text-white">VSI</span>
+            <span class="text-[10px] font-mono uppercase bg-zinc-800 text-zinc-300 border border-zinc-700 px-1.5 py-0.5 rounded">Quant Codex</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center space-x-1 text-xs font-mono text-zinc-400">
+        <a href="#microstructure" class="px-3 py-1.5 rounded hover:text-white hover:bg-white/5 transition-colors">Microstructure</a>
+        <a href="#optimal-execution" class="px-3 py-1.5 rounded hover:text-white hover:bg-white/5 transition-colors">Execution</a>
+        <a href="#stochastic-calculus" class="px-3 py-1.5 rounded hover:text-white hover:bg-white/5 transition-colors">Stochastics</a>
+        <a href="#volatility-surfaces" class="px-3 py-1.5 rounded hover:text-white hover:bg-white/5 transition-colors">Volatility</a>
+        <a href="#filtering" class="px-3 py-1.5 rounded hover:text-white hover:bg-white/5 transition-colors">Filtering</a>
+        <a href="#risk-extremes" class="px-3 py-1.5 rounded hover:text-white hover:bg-white/5 transition-colors">Risk & EVT</a>
+        <a href="#simulators" class="px-3 py-1.5 rounded hover:text-white hover:bg-white/5 transition-colors">Laboratory</a>
+        <a href="#publications" class="px-3 py-1.5 rounded text-zinc-200 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">Publications</a>
+      </nav>
+
+      <!-- Right Action Items -->
+      <div class="flex items-center space-x-2">
+        <button id="audio-toggle-btn" class="p-2 rounded bg-white/5 hover:bg-white/10 text-zinc-400 border border-white/10 text-xs font-mono transition-colors" title="Toggle Audio Feedback">
+          <i data-lucide="volume-x" class="w-3.5 h-3.5"></i>
+        </button>
+
+        <button onclick="document.getElementById('terminal-fab').click()" class="flex items-center space-x-1.5 text-xs font-mono bg-white/5 hover:bg-white/10 text-zinc-300 border border-white/10 px-3 py-1.5 rounded transition-colors" title="Open Mathematical Terminal (~)">
+          <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+          <span>CLI</span>
+          <kbd class="text-[9px] bg-black/40 px-1 py-0.5 rounded text-zinc-500 border border-white/10">~</kbd>
+        </button>
+
+        <button id="mobile-menu-btn" class="lg:hidden p-2 text-zinc-400 hover:text-white" aria-label="Toggle Menu">
+          <i data-lucide="menu" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav" class="hidden lg:hidden border-b border-white/10 bg-[#0e1017] px-4 py-3 space-y-2 text-xs font-mono">
+      <a href="#microstructure" class="block py-1 text-zinc-300 hover:text-white">1. Microstructure & LOB</a>
+      <a href="#optimal-execution" class="block py-1 text-zinc-300 hover:text-white">2. Optimal Execution</a>
+      <a href="#stochastic-calculus" class="block py-1 text-zinc-300 hover:text-white">3. Stochastic Calculus</a>
+      <a href="#volatility-surfaces" class="block py-1 text-zinc-300 hover:text-white">4. Volatility Surfaces</a>
+      <a href="#filtering" class="block py-1 text-zinc-300 hover:text-white">5. State Filtering & HMM</a>
+      <a href="#risk-extremes" class="block py-1 text-zinc-300 hover:text-white">6. Quantitative Risk & EVT</a>
+      <a href="#simulators" class="block py-1 text-zinc-300 hover:text-white">7. Mathematical Laboratory</a>
+      <a href="#publications" class="block py-1 text-white font-medium">8. Research Publications</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative pt-20 pb-20 border-b border-white/5">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      
+      <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-mono mb-6">
+        <span>Theoretical Foundations of Quantitative Finance</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-6xl font-display font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
+        The Mathematical Canon of <span class="text-zinc-200">High-Frequency Trading</span>
+      </h1>
+
+      <p class="mt-6 text-base sm:text-lg text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed">
+        An academic compendium codifying continuous double auction microstructures, stochastic control PDEs, Hawkes point processes, and optimal liquidation mechanics.
+      </p>
+
+      <!-- Key Stat Badges -->
+      <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        <div class="glass-panel p-4 text-center">
+          <div class="text-2xl font-mono font-bold text-white">25+</div>
+          <div class="text-[11px] text-zinc-400 font-mono mt-0.5 uppercase tracking-wider">Formal Theorems</div>
+        </div>
+        <div class="glass-panel p-4 text-center">
+          <div class="text-2xl font-mono font-bold text-white">4</div>
+          <div class="text-[11px] text-zinc-400 font-mono mt-0.5 uppercase tracking-wider">Model Simulators</div>
+        </div>
+        <div class="glass-panel p-4 text-center">
+          <div class="text-2xl font-mono font-bold text-white">100%</div>
+          <div class="text-[11px] text-zinc-400 font-mono mt-0.5 uppercase tracking-wider">Open Formulations</div>
+        </div>
+        <div class="glass-panel p-4 text-center">
+          <div class="text-2xl font-mono font-bold text-white">Peer-Reviewed</div>
+          <div class="text-[11px] text-zinc-400 font-mono mt-0.5 uppercase tracking-wider">Academic Canon</div>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="mt-10 flex flex-wrap justify-center items-center gap-3.5">
+        <a href="#simulators" class="px-6 py-3 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 font-medium text-xs font-mono transition-colors flex items-center space-x-2">
+          <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+          <span>Open Interactive Lab</span>
+        </a>
+        <a href="#compendium-browser" class="px-6 py-3 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-zinc-500 text-zinc-200 font-medium text-xs font-mono transition-colors flex items-center space-x-2">
+          <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+          <span>Mathematical Codex</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INTERACTIVE SIMULATION LAB SECTION -->
+  <section id="simulators" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-white/5 relative z-10">
+    
+    <div class="mb-10">
+      <div class="text-xs font-mono text-zinc-400 uppercase tracking-widest">
+        <span>Interactive Numerical Models</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-display font-bold text-white mt-1">
+        Mathematical Simulation Laboratory
+      </h2>
+      <p class="text-zinc-400 text-xs sm:text-sm mt-1 max-w-3xl">
+        Adjust continuous parameters or select standard scenarios to observe closed-form inventory skews, point-process cascades, and implied volatility smiles.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- SIMULATOR 1: Avellaneda-Stoikov Market Making -->
+      <div class="glass-panel p-6">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-display font-bold text-base text-white">Avellaneda-Stoikov Market Maker</h3>
+          <span class="code-tag">Optimal Control</span>
+        </div>
+        
+        <p class="text-xs text-zinc-400 mb-3 leading-relaxed">
+          Reservation price: $r(s,q,t) = s - q\gamma\sigma^2(T-t)$. Quotes skew downward during long inventory ($q > 0$) to induce buyer fills.
+        </p>
+
+        <!-- Presets -->
+        <div class="flex items-center space-x-1.5 mb-3">
+          <span class="text-[10px] font-mono text-zinc-500">Presets:</span>
+          <button class="preset-btn" data-as-preset="inventory-shock">Inventory Squeeze (q=+7)</button>
+          <button class="preset-btn" data-as-preset="balanced">Balanced (q=0)</button>
+          <button class="preset-btn" data-as-preset="high-vol">High Vol (70%)</button>
+        </div>
+
+        <!-- Canvas -->
+        <div class="sim-canvas-wrap mb-4">
+          <canvas id="as-canvas" class="sim-canvas"></canvas>
+          <div class="sim-tooltip"></div>
+        </div>
+
+        <!-- Sliders -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-mono">
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Inventory (q):</span>
+              <span id="as-q-val" class="text-white font-medium">+2</span>
+            </div>
+            <input type="range" id="as-q" min="-8" max="8" step="1" value="2">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Risk Aversion (γ):</span>
+              <span id="as-gamma-val" class="text-white font-medium">0.10</span>
+            </div>
+            <input type="range" id="as-gamma" min="0.01" max="0.5" step="0.01" value="0.1">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Volatility (σ):</span>
+              <span id="as-sigma-val" class="text-white font-medium">30%</span>
+            </div>
+            <input type="range" id="as-sigma" min="0.1" max="0.8" step="0.05" value="0.30">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Liquidity (κ):</span>
+              <span id="as-kappa-val" class="text-white font-medium">1.5</span>
+            </div>
+            <input type="range" id="as-kappa" min="0.5" max="4.0" step="0.1" value="1.5">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Horizon (T - t):</span>
+              <span id="as-time-val" class="text-white font-medium">1.00</span>
+            </div>
+            <input type="range" id="as-time" min="0.1" max="2.0" step="0.1" value="1.0">
+          </div>
+        </div>
+      </div>
+
+      <!-- SIMULATOR 2: Hawkes Self-Exciting Process -->
+      <div class="glass-panel p-6">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-display font-bold text-base text-white">Hawkes Process Order Cascades</h3>
+          <button id="hwk-regen-btn" class="text-xs font-mono bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-2.5 py-1 rounded flex items-center space-x-1">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+            <span>Simulate</span>
+          </button>
+        </div>
+
+        <p class="text-xs text-zinc-400 mb-3 leading-relaxed">
+          Intensity $\lambda(t) = \mu + \sum \alpha e^{-\beta(t - t_i)}$. Branching ratio $\eta = \alpha/\beta < 1$ guarantees subcritical stationarity.
+        </p>
+
+        <!-- Presets -->
+        <div class="flex items-center space-x-1.5 mb-3">
+          <span class="text-[10px] font-mono text-zinc-500">Presets:</span>
+          <button class="preset-btn" data-hwk-preset="flash-cascade">Flash Cascade (η=0.95)</button>
+          <button class="preset-btn" data-hwk-preset="subcritical">Subcritical (η=0.50)</button>
+          <button class="preset-btn" data-hwk-preset="poisson">Poisson (η≈0)</button>
+        </div>
+
+        <!-- Canvas -->
+        <div class="sim-canvas-wrap mb-4">
+          <canvas id="hwk-canvas" class="sim-canvas"></canvas>
+          <div class="sim-tooltip"></div>
+        </div>
+
+        <!-- Sliders -->
+        <div class="grid grid-cols-3 gap-3 text-xs font-mono">
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Base (μ):</span>
+              <span id="hwk-mu-val" class="text-white font-medium">1.2</span>
+            </div>
+            <input type="range" id="hwk-mu" min="0.2" max="3.0" step="0.1" value="1.2">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Excitation (α):</span>
+              <span id="hwk-alpha-val" class="text-white font-medium">1.6</span>
+            </div>
+            <input type="range" id="hwk-alpha" min="0.2" max="3.5" step="0.1" value="1.6">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Decay (β):</span>
+              <span id="hwk-beta-val" class="text-white font-medium">2.0</span>
+            </div>
+            <input type="range" id="hwk-beta" min="0.5" max="4.5" step="0.1" value="2.0">
+          </div>
+        </div>
+      </div>
+
+      <!-- SIMULATOR 3: Ornstein-Uhlenbeck Mean Reversion SDE -->
+      <div class="glass-panel p-6">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-display font-bold text-base text-white">Ornstein-Uhlenbeck (OU) SDE</h3>
+          <button id="ou-regen-btn" class="text-xs font-mono bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-2.5 py-1 rounded flex items-center space-x-1">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+            <span>Monte Carlo</span>
+          </button>
+        </div>
+
+        <p class="text-xs text-zinc-400 mb-3 leading-relaxed">
+          Diffusion $dX_t = \theta(\mu - X_t)dt + \sigma dW_t$. Shaded bands indicate $\pm 1\sigma_\infty, \pm 2\sigma_\infty$ stationary variance.
+        </p>
+
+        <!-- Presets -->
+        <div class="flex items-center space-x-1.5 mb-3">
+          <span class="text-[10px] font-mono text-zinc-500">Presets:</span>
+          <button class="preset-btn" data-ou-preset="fast-revert">Fast Revert (θ=3.5)</button>
+          <button class="preset-btn" data-ou-preset="slow-drift">Slow Drift (θ=0.3)</button>
+          <button class="preset-btn" data-ou-preset="high-dispersion">High Dispersion</button>
+        </div>
+
+        <!-- Canvas -->
+        <div class="sim-canvas-wrap mb-4">
+          <canvas id="ou-canvas" class="sim-canvas"></canvas>
+          <div class="sim-tooltip"></div>
+        </div>
+
+        <!-- Sliders -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Speed (θ):</span>
+              <span id="ou-theta-val" class="text-white font-medium">1.50</span>
+            </div>
+            <input type="range" id="ou-theta" min="0.2" max="4.0" step="0.1" value="1.5">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Mean (μ):</span>
+              <span id="ou-mu-val" class="text-white font-medium">0.00</span>
+            </div>
+            <input type="range" id="ou-mu" min="-1.5" max="1.5" step="0.1" value="0.0">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Diffusion (σ):</span>
+              <span id="ou-sigma-val" class="text-white font-medium">0.40</span>
+            </div>
+            <input type="range" id="ou-sigma" min="0.1" max="1.0" step="0.05" value="0.4">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Start (X₀):</span>
+              <span id="ou-x0-val" class="text-white font-medium">1.20</span>
+            </div>
+            <input type="range" id="ou-x0" min="-2.0" max="2.0" step="0.1" value="1.2">
+          </div>
+        </div>
+      </div>
+
+      <!-- SIMULATOR 4: SABR & Volatility Smile Dynamics -->
+      <div class="glass-panel p-6">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-display font-bold text-base text-white">SABR Volatility Smile</h3>
+          <span class="code-tag">Asymptotic Expansion</span>
+        </div>
+
+        <p class="text-xs text-zinc-400 mb-3 leading-relaxed">
+          Closed-form implied volatility $\sigma_{\text{implied}}(K, F)$. Negative correlation $\rho < 0$ generates downward equity volatility skew.
+        </p>
+
+        <!-- Presets -->
+        <div class="flex items-center space-x-1.5 mb-3">
+          <span class="text-[10px] font-mono text-zinc-500">Presets:</span>
+          <button class="preset-btn" data-sabr-preset="equity-crash">Equity Skew (ρ=-0.75)</button>
+          <button class="preset-btn" data-sabr-preset="fx-smile">FX Smile (ρ=0.0)</button>
+          <button class="preset-btn" data-sabr-preset="vol-explosion">Vol Explosion (ν=85%)</button>
+        </div>
+
+        <!-- Canvas -->
+        <div class="sim-canvas-wrap mb-4">
+          <canvas id="sabr-canvas" class="sim-canvas"></canvas>
+          <div class="sim-tooltip"></div>
+        </div>
+
+        <!-- Sliders -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>ATM Vol (α):</span>
+              <span id="sabr-alpha-val" class="text-white font-medium">25%</span>
+            </div>
+            <input type="range" id="sabr-alpha" min="0.1" max="0.6" step="0.02" value="0.25">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Elasticity (β):</span>
+              <span id="sabr-beta-val" class="text-white font-medium">0.80</span>
+            </div>
+            <input type="range" id="sabr-beta" min="0.1" max="1.0" step="0.05" value="0.8">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Correlation (ρ):</span>
+              <span id="sabr-rho-val" class="text-white font-medium">-0.35</span>
+            </div>
+            <input type="range" id="sabr-rho" min="-0.85" max="0.85" step="0.05" value="-0.35">
+          </div>
+
+          <div>
+            <div class="flex justify-between text-zinc-400 mb-1">
+              <span>Vol-of-Vol (ν):</span>
+              <span id="sabr-nu-val" class="text-white font-medium">40%</span>
+            </div>
+            <input type="range" id="sabr-nu" min="0.1" max="1.0" step="0.05" value="0.4">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SEARCH & CATEGORY FILTER BAR -->
+  <section id="compendium-browser" class="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="glass-panel p-5">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        
+        <!-- Live Search Input -->
+        <div class="relative flex-1">
+          <i data-lucide="search" class="w-4 h-4 text-zinc-500 absolute left-3.5 top-3"></i>
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="Search theorems, equations, or models (e.g. 'Hawkes', 'Avellaneda', 'Kalman', 'Dupire')..."
+            class="w-full pl-10 pr-4 py-2 rounded-lg bg-zinc-900 border border-zinc-700 text-white placeholder-zinc-500 text-xs focus:outline-none focus:border-zinc-400 font-sans transition-colors"
+          >
+        </div>
+
+        <!-- Active Count Badge -->
+        <div class="flex items-center space-x-2">
+          <span id="visible-models-count" class="text-xs font-mono bg-zinc-800 text-zinc-300 border border-zinc-700 px-3 py-1.5 rounded">
+            20 Models Active
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="flex flex-wrap gap-1.5 mt-3.5 pt-3.5 border-t border-white/5 text-xs font-mono">
+        <button class="category-filter-btn px-3 py-1 rounded border border-white/20 bg-white/10 text-white active" data-category="all">All Disciplines</button>
+        <button class="category-filter-btn px-3 py-1 rounded border border-white/5 text-zinc-400 hover:bg-white/5" data-category="microstructure">Microstructure & LOB</button>
+        <button class="category-filter-btn px-3 py-1 rounded border border-white/5 text-zinc-400 hover:bg-white/5" data-category="execution">Optimal Execution</button>
+        <button class="category-filter-btn px-3 py-1 rounded border border-white/5 text-zinc-400 hover:bg-white/5" data-category="stochastics">Stochastic SDEs</button>
+        <button class="category-filter-btn px-3 py-1 rounded border border-white/5 text-zinc-400 hover:bg-white/5" data-category="volatility">Volatility Surfaces</button>
+        <button class="category-filter-btn px-3 py-1 rounded border border-white/5 text-zinc-400 hover:bg-white/5" data-category="filtering">Filtering & HMM</button>
+        <button class="category-filter-btn px-3 py-1 rounded border border-white/5 text-zinc-400 hover:bg-white/5" data-category="risk">Risk & EVT</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATHEMATICAL COMPENDIUM MODULES -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-12 relative z-10">
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 1: MARKET MICROSTRUCTURE & ORDER FLOW DYNAMICS -->
+    <!-- ========================================================================= -->
+    <section id="microstructure" class="space-y-4">
+      <div class="border-b border-white/10 pb-3">
+        <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+          <span>Module 01 • Order Book Physics</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-display font-bold text-white mt-0.5">
+          Market Microstructure & Point Processes
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <!-- Card: Hawkes Processes -->
+        <div class="quant-model-card glass-panel p-5" data-category="microstructure" data-tags="hawkes point process self exciting arrival cascade order book ofi">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Mutually Exciting Hawkes Point Processes</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Formulates clustered arrivals of market orders, cancellations, and liquidity consumption where historical events excite future arrival intensities.
+          </p>
+          
+          <div class="math-block" data-latex="\lambda_i(t) = \mu_i + \sum_{j=1}^M \int_0^t \alpha_{ij} e^{-\beta_{ij}(t-s)} dN_j(s)">
+            <button class="copy-math-btn" data-latex="\lambda_i(t) = \mu_i + \sum_{j=1}^M \int_0^t \alpha_{ij} e^{-\beta_{ij}(t-s)} dN_j(s)">Copy LaTeX</button>
+            $$\lambda_i(t) = \mu_i + \sum_{j=1}^M \int_0^t \alpha_{ij} e^{-\beta_{ij}(t-s)} dN_j(s)$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• $\mu_i$:</span> Exogenous baseline Poisson intensity</div>
+            <div><span class="text-zinc-200">• $\alpha_{ij}$:</span> Cross-excitation jump amplitude</div>
+            <div><span class="text-zinc-200">• $\beta_{ij}$:</span> Exponential memory decay rate</div>
+            <div><span class="text-zinc-200">• Stability:</span> Requires spectral radius $\rho(\mathbf{\Gamma}) < 1$ with $\Gamma_{ij} = \frac{\alpha_{ij}}{\beta_{ij}}$</div>
+          </div>
+        </div>
+
+        <!-- Card: Stoikov Micro-Price & Imbalance -->
+        <div class="quant-model-card glass-panel p-5" data-category="microstructure" data-tags="micro price stoikov ofi voi order flow imbalance lob">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Stoikov's Micro-Price & Queue Dynamics</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="as">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Computes the volume-weighted martingale price reflecting queue size asymmetry between best bid ($Q^b$) and best ask ($Q^a$) before next mid-price jump.
+          </p>
+
+          <div class="math-block" data-latex="P_{\text{micro}} = \frac{Q^b}{Q^b + Q^a} P^a + \frac{Q^a}{Q^b + Q^a} P^b = P_{\text{mid}} + \frac{S}{2} \left( \frac{Q^b - Q^a}{Q^b + Q^a} \right)">
+            <button class="copy-math-btn" data-latex="P_{\text{micro}} = \frac{Q^b}{Q^b + Q^a} P^a + \frac{Q^a}{Q^b + Q^a} P^b = P_{\text{mid}} + \frac{S}{2} \left( \frac{Q^b - Q^a}{Q^b + Q^a} \right)">Copy LaTeX</button>
+            $$P_{\text{micro}} = \frac{Q^b}{Q^b + Q^a} P^a + \frac{Q^a}{Q^b + Q^a} P^b = P_{\text{mid}} + \frac{S}{2} \mathcal{I}_Q$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• $\mathcal{I}_Q = \frac{Q^b - Q^a}{Q^b + Q^a}$:</span> Normalized queue volume imbalance $\in [-1, +1]$</div>
+            <div><span class="text-zinc-200">• $S = P^a - P^b$:</span> Instantaneous bid-ask spread</div>
+            <div><span class="text-zinc-200">• Martingale Property:</span> $\mathbb{E}[P_{\tau} \mid \mathcal{F}_t] = P_{\text{micro}}(t)$ under Markov jumps</div>
+          </div>
+
+          <div class="card-graph-wrap">
+            <canvas id="graph-microprice" class="card-graph-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Card: Kyle's Lambda Informed Trading -->
+        <div class="quant-model-card glass-panel p-5" data-category="microstructure" data-tags="kyles lambda kyle adverse selection informed trading impact">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Kyle's Lambda & Adverse Selection</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Formulates equilibrium market depth when market makers clear aggregate order flow composed of informed insider orders and exogenous noise trades.
+          </p>
+
+          <div class="math-block" data-latex="\Delta P_t = \lambda (x_t + u_t), \quad \lambda = \frac{1}{2} \sqrt{\frac{\Sigma_0}{\sigma_u^2}}">
+            <button class="copy-math-btn" data-latex="\Delta P_t = \lambda (x_t + u_t), \quad \lambda = \frac{1}{2} \sqrt{\frac{\Sigma_0}{\sigma_u^2}}">Copy LaTeX</button>
+            $$\Delta P_t = \lambda (x_t + u_t), \quad \lambda = \frac{1}{2} \sqrt{\frac{\Sigma_0}{\sigma_u^2}}$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• $\lambda$:</span> Kyle's Lambda (price impact per unit volume)</div>
+            <div><span class="text-zinc-200">• $\Sigma_0$:</span> Prior uncertainty regarding asset fundamental value</div>
+            <div><span class="text-zinc-200">• $\sigma_u^2$:</span> Variance of uninformed noise trading</div>
+          </div>
+        </div>
+
+        <!-- Card: Bouchaud Propagator Model -->
+        <div class="quant-model-card glass-panel p-5" data-category="microstructure" data-tags="bouchaud transient impact propagator square root law order flow">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Bouchaud Non-Linear Transient Impact Propagator</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="bouchaud">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Resolves persistent sign correlations in order flow without leading to arbitrage via a decaying power-law propagator kernel $G(\tau)$.
+          </p>
+
+          <div class="math-block" data-latex="I(t) = \int_0^t G(t - s) \epsilon(s) ds, \quad G(\tau) \sim \tau^{-\gamma} \quad (0.3 \le \gamma \le 0.6)">
+            <button class="copy-math-btn" data-latex="I(t) = \int_0^t G(t - s) \epsilon(s) ds, \quad G(\tau) \sim \tau^{-\gamma} \quad (0.3 \le \gamma \le 0.6)">Copy LaTeX</button>
+            $$I(t) = \int_0^t G(t - s) \epsilon(s) ds, \quad G(\tau) \sim \tau^{-\gamma} \quad (0.3 \le \gamma \le 0.6)$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• $\epsilon(s) \in \{-1, +1\}$:</span> Trade sign sequence</div>
+            <div><span class="text-zinc-200">• $G(\tau)$:</span> Bare impact propagator quantifying memory decay</div>
+            <div><span class="text-zinc-200">• Square-Root Law:</span> Aggregate impact $I \propto \sigma \sqrt{Q/V}$</div>
+          </div>
+
+          <div class="card-graph-wrap">
+            <canvas id="graph-bouchaud" class="card-graph-canvas"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 2: OPTIMAL EXECUTION & MARKET MAKING -->
+    <!-- ========================================================================= -->
+    <section id="optimal-execution" class="space-y-4">
+      <div class="border-b border-white/10 pb-3">
+        <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+          <span>Module 02 • Stochastic Optimal Control</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-display font-bold text-white mt-0.5">
+          Optimal Execution & Market Making Models
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <!-- Card: Avellaneda-Stoikov -->
+        <div class="quant-model-card glass-panel p-5" data-category="execution" data-tags="avellaneda stoikov market making inventory reservation price spreads">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Avellaneda-Stoikov Market Making (2008)</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="as">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Maximizes expected terminal utility under CARA utility by deriving reservation price $r(s,q,t)$ and optimal quoting spreads.
+          </p>
+
+          <div class="math-block" data-latex="r(s, q, t) = s - q \gamma \sigma^2 (T - t), \quad \delta^a + \delta^b = \gamma \sigma^2 (T - t) + \frac{2}{\gamma} \ln\left(1 + \frac{\gamma}{\kappa}\right)">
+            <button class="copy-math-btn" data-latex="r(s, q, t) = s - q \gamma \sigma^2 (T - t), \quad \delta^a + \delta^b = \gamma \sigma^2 (T - t) + \frac{2}{\gamma} \ln\left(1 + \frac{\gamma}{\kappa}\right)">Copy LaTeX</button>
+            $$r(s, q, t) = s - q \gamma \sigma^2 (T - t)$$
+            $$\delta^a + \delta^b = \gamma \sigma^2 (T - t) + \frac{2}{\gamma} \ln\left(1 + \frac{\gamma}{\kappa}\right)$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• $r(s, q, t)$:</span> Indifference price for marginal inventory unit</div>
+            <div><span class="text-zinc-200">• $\delta^a, \delta^b$:</span> Distance of quotes from mid price $s$</div>
+            <div><span class="text-zinc-200">• Fill Intensity:</span> $\lambda(\delta) = A e^{-\kappa \delta}$</div>
+          </div>
+        </div>
+
+        <!-- Card: Almgren-Chriss -->
+        <div class="quant-model-card glass-panel p-5" data-category="execution" data-tags="almgren chriss liquidation impact permanent temporary risk aversion">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Almgren-Chriss Optimal Liquidation (2000)</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="almgren">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Constructs the efficient execution frontier by minimizing the mean-variance trade-off between market volatility and execution impact.
+          </p>
+
+          <div class="math-block" data-latex="x_j = \frac{\sinh(\kappa(T - t_j))}{\sinh(\kappa T)} X_0, \quad \kappa \approx \sqrt{\frac{\lambda \sigma^2}{\eta}}">
+            <button class="copy-math-btn" data-latex="x_j = \frac{\sinh(\kappa(T - t_j))}{\sinh(\kappa T)} X_0, \quad \kappa \approx \sqrt{\frac{\lambda \sigma^2}{\eta}}">Copy LaTeX</button>
+            $$x_j = \frac{\sinh(\kappa(T - t_j))}{\sinh(\kappa T)} X_0, \quad \kappa = \text{arcosh}\left(\frac{\tau^2 \lambda \sigma^2}{2\eta} + 1\right)$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• $x_j$:</span> Remaining inventory shares at step $t_j$</div>
+            <div><span class="text-zinc-200">• $\eta$:</span> Temporary price impact parameter</div>
+            <div><span class="text-zinc-200">• $\lambda$:</span> Risk-aversion penalty coefficient</div>
+          </div>
+
+          <div class="card-graph-wrap">
+            <canvas id="graph-almgren" class="card-graph-canvas"></canvas>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 3: CONTINUOUS-TIME STOCHASTIC CALCULUS -->
+    <!-- ========================================================================= -->
+    <section id="stochastic-calculus" class="space-y-4">
+      <div class="border-b border-white/10 pb-3">
+        <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+          <span>Module 03 • Stochastic Differential Equations</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-display font-bold text-white mt-0.5">
+          Continuous-Time Stochastic Calculus
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <!-- Card: Ornstein-Uhlenbeck -->
+        <div class="quant-model-card glass-panel p-5" data-category="stochastics" data-tags="ornstein uhlenbeck ou mean reversion sde stat arb pairs half life">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Ornstein-Uhlenbeck (OU) Diffusion</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            The foundational stationary Gauss-Markov process modeling cross-asset spreads, volatility drift, and basis spreads with linear restoring pull.
+          </p>
+
+          <div class="math-block" data-latex="dX_t = \theta (\mu - X_t) dt + \sigma dW_t, \quad \mathbb{V}\text{ar}[X_\infty] = \frac{\sigma^2}{2\theta}, \quad \tau_{1/2} = \frac{\ln(2)}{\theta}">
+            <button class="copy-math-btn" data-latex="dX_t = \theta (\mu - X_t) dt + \sigma dW_t, \quad \mathbb{V}\text{ar}[X_\infty] = \frac{\sigma^2}{2\theta}, \quad \tau_{1/2} = \frac{\ln(2)}{\theta}">Copy LaTeX</button>
+            $$dX_t = \theta (\mu - X_t) dt + \sigma dW_t$$
+            $$\mathbb{V}\text{ar}[X_\infty] = \frac{\sigma^2}{2\theta}, \quad \tau_{1/2} = \frac{\ln(2)}{\theta}$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• $\theta$:</span> Mean-reversion velocity</div>
+            <div><span class="text-zinc-200">• $\mu$:</span> Unconditional equilibrium level</div>
+            <div><span class="text-zinc-200">• Half-Life $\tau_{1/2}$:</span> Expected duration to eliminate 50% of displacement</div>
+          </div>
+        </div>
+
+        <!-- Card: Itô's Lemma -->
+        <div class="quant-model-card glass-panel p-5" data-category="stochastics" data-tags="itos lemma ito calculus stochastic differential equations taylor expansion">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Multidimensional Itô's Lemma</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            The fundamental chain rule of stochastic analysis accounting for non-zero quadratic variation of Brownian motion: $(dW_t)^2 = dt$.
+          </p>
+
+          <div class="math-block" data-latex="df = \left( \frac{\partial f}{\partial t} + \boldsymbol{\mu}^T \nabla f + \frac{1}{2} \text{Tr}\left(\boldsymbol{\Sigma} \nabla^2 f\right) \right) dt + (\nabla f)^T \boldsymbol{\sigma} d\mathbf{W}_t">
+            <button class="copy-math-btn" data-latex="df = \left( \frac{\partial f}{\partial t} + \boldsymbol{\mu}^T \nabla f + \frac{1}{2} \text{Tr}\left(\boldsymbol{\Sigma} \nabla^2 f\right) \right) dt + (\nabla f)^T \boldsymbol{\sigma} d\mathbf{W}_t">Copy LaTeX</button>
+            $$df = \left( \frac{\partial f}{\partial t} + \boldsymbol{\mu}^T \nabla f + \frac{1}{2} \text{Tr}\left(\boldsymbol{\Sigma} \nabla^2 f\right) \right) dt + (\nabla f)^T \boldsymbol{\sigma} d\mathbf{W}_t$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• Itô Drift Correction:</span> $\frac{1}{2} \sigma^2 S^2 \frac{\partial^2 f}{\partial S^2} dt$ generates option Gamma</div>
+            <div><span class="text-zinc-200">• Quadratic Variation:</span> $[W, W]_t = t$ almost surely</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 4: VOLATILITY SURFACES & DERIVATIVES MODELING -->
+    <!-- ========================================================================= -->
+    <section id="volatility-surfaces" class="space-y-4">
+      <div class="border-b border-white/10 pb-3">
+        <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+          <span>Module 04 • Implied Volatility Geometry</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-display font-bold text-white mt-0.5">
+          Volatility Surfaces & Derivatives Models
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <!-- Card: Black-Scholes PDE & Cross-Greeks -->
+        <div class="quant-model-card glass-panel p-5" data-category="volatility" data-tags="black scholes pde greeks delta gamma vega vanna volga vomma">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Black-Scholes PDE & Cross-Greeks</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Constructs the risk-neutral valuation PDE and higher-order sensitivities critical for institutional dynamic delta-gamma-vega hedging.
+          </p>
+
+          <div class="math-block" data-latex="\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \Gamma + r S \Delta - r V = 0, \quad \text{Vanna} = -\phi(d_1) \frac{d_2}{\sigma}, \quad \text{Volga} = \mathcal{V} \frac{d_1 d_2}{\sigma}">
+            <button class="copy-math-btn" data-latex="\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \Gamma + r S \Delta - r V = 0, \quad \text{Vanna} = -\phi(d_1) \frac{d_2}{\sigma}, \quad \text{Volga} = \mathcal{V} \frac{d_1 d_2}{\sigma}">Copy LaTeX</button>
+            $$\frac{\partial V}{\partial t} + \frac{1}{2}\sigma^2 S^2 \Gamma + r S \Delta - r V = 0$$
+            $$\text{Vanna} = \frac{\partial^2 V}{\partial S \partial \sigma} = -\phi(d_1) \frac{d_2}{\sigma}, \quad \text{Volga} = \frac{\partial^2 V}{\partial \sigma^2} = \mathcal{V} \frac{d_1 d_2}{\sigma}$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• Vanna:</span> Delta sensitivity to IV; key for skew hedging</div>
+            <div><span class="text-zinc-200">• Volga (Vomma):</span> Vega sensitivity to IV; measures curvature risk</div>
+          </div>
+
+          <div class="card-graph-wrap">
+            <canvas id="graph-dupire" class="card-graph-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Card: Heston Stochastic Volatility -->
+        <div class="quant-model-card glass-panel p-5" data-category="volatility" data-tags="heston stochastic volatility mean reverting variance feller characteristic function">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Heston Stochastic Volatility Model (1993)</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Models continuous variance $v_t$ as a mean-reverting CIR process correlated with spot price $S_t$ generating volatility smiles.
+          </p>
+
+          <div class="math-block" data-latex="dS_t = \mu S_t dt + \sqrt{v_t} S_t dW_t^S, \quad dv_t = \kappa(\theta - v_t)dt + \xi \sqrt{v_t} dW_t^v, \quad \mathbb{E}[dW_t^S dW_t^v] = \rho dt">
+            <button class="copy-math-btn" data-latex="dS_t = \mu S_t dt + \sqrt{v_t} S_t dW_t^S, \quad dv_t = \kappa(\theta - v_t)dt + \xi \sqrt{v_t} dW_t^v, \quad \mathbb{E}[dW_t^S dW_t^v] = \rho dt">Copy LaTeX</button>
+            $$dS_t = \mu S_t dt + \sqrt{v_t} S_t dW_t^S$$
+            $$dv_t = \kappa(\theta - v_t)dt + \xi \sqrt{v_t} dW_t^v, \quad \mathbb{E}[dW_t^S dW_t^v] = \rho dt$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• Feller Condition:</span> $2\kappa\theta > \xi^2$ guarantees variance $v_t > 0$ strictly</div>
+            <div><span class="text-zinc-200">• Correlation $\rho < 0$:</span> Produces downward equity volatility skew</div>
+            <div><span class="text-zinc-200">• Vol-of-vol $\xi$:</span> Controls curvature of volatility smile wings</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 5: STATE-SPACE ESTIMATION & FILTERING -->
+    <!-- ========================================================================= -->
+    <section id="filtering" class="space-y-4">
+      <div class="border-b border-white/10 pb-3">
+        <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+          <span>Module 05 • Recursive State Estimation</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-display font-bold text-white mt-0.5">
+          State-Space Filtering & Latent Regimes
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <!-- Card: Kalman Filter -->
+        <div class="quant-model-card glass-panel p-5" data-category="filtering" data-tags="kalman filter state space riccati gain innovation stat arb hedge ratio">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Discrete Linear Kalman Filter</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            The minimum mean squared error (MMSE) estimator for dynamic latent states (e.g., dynamic hedge ratio $\beta_t$ in cointegrated pairs).
+          </p>
+
+          <div class="math-block" data-latex="\mathbf{K}_k = \mathbf{P}_k^- \mathbf{H}_k^T (\mathbf{H}_k \mathbf{P}_k^- \mathbf{H}_k^T + \mathbf{R}_k)^{-1}, \quad \mathbf{x}_k = \mathbf{x}_k^- + \mathbf{K}_k (\mathbf{z}_k - \mathbf{H}_k \mathbf{x}_k^-)">
+            <button class="copy-math-btn" data-latex="\mathbf{K}_k = \mathbf{P}_k^- \mathbf{H}_k^T (\mathbf{H}_k \mathbf{P}_k^- \mathbf{H}_k^T + \mathbf{R}_k)^{-1}, \quad \mathbf{x}_k = \mathbf{x}_k^- + \mathbf{K}_k (\mathbf{z}_k - \mathbf{H}_k \mathbf{x}_k^-)">Copy LaTeX</button>
+            $$\mathbf{K}_k = \mathbf{P}_k^- \mathbf{H}_k^T \left(\mathbf{H}_k \mathbf{P}_k^- \mathbf{H}_k^T + \mathbf{R}_k\right)^{-1}$$
+            $$\mathbf{x}_k = \mathbf{x}_k^- + \mathbf{K}_k (\mathbf{z}_k - \mathbf{H}_k \mathbf{x}_k^-), \quad \mathbf{P}_k = (\mathbf{I} - \mathbf{K}_k \mathbf{H}_k)\mathbf{P}_k^-$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• Innovation:</span> $\mathbf{y}_k = \mathbf{z}_k - \mathbf{H}_k \mathbf{x}_k^-$ (Residual error)</div>
+            <div><span class="text-zinc-200">• $\mathbf{K}_k$:</span> Optimal Kalman Gain balancing prior vs new measurement</div>
+            <div><span class="text-zinc-200">• $\mathbf{Q}, \mathbf{R}$:</span> Process noise and measurement noise covariance</div>
+          </div>
+
+          <div class="card-graph-wrap">
+            <canvas id="graph-kalman" class="card-graph-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Card: Hidden Markov Models (HMM) -->
+        <div class="quant-model-card glass-panel p-5" data-category="filtering" data-tags="hmm hidden markov model viterbi baum welch regime switching markov">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Hidden Markov Models (HMM) & Viterbi Paths</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Infers unobserved regime states $S_t \in \{1, \dots, K\}$ (e.g., Bull Trending, Mean-Reverting, Volatility Shock).
+          </p>
+
+          <div class="math-block" data-latex="V_{t,k} = \max_{i} \left( V_{t-1, i} \cdot A_{ik} \right) \cdot B_k(y_t)">
+            <button class="copy-math-btn" data-latex="V_{t,k} = \max_{i} \left( V_{t-1, i} \cdot A_{ik} \right) \cdot B_k(y_t)">Copy LaTeX</button>
+            $$V_{t,k} = \max_{i} \left( V_{t-1, i} \cdot A_{ik} \right) \cdot B_k(y_t)$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• Matrix $\mathbf{A}$:</span> State transition probabilities between regimes</div>
+            <div><span class="text-zinc-200">• Emission $B_k(y)$:</span> Probability of return $y_t$ given state $k$</div>
+            <div><span class="text-zinc-200">• Viterbi Algorithm:</span> Dynamic programming decoding of most probable state path</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODULE 6: QUANTITATIVE RISK & EXTREMES -->
+    <!-- ========================================================================= -->
+    <section id="risk-extremes" class="space-y-4">
+      <div class="border-b border-white/10 pb-3">
+        <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+          <span>Module 06 • Heavy Tails & Systemic Risk</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-display font-bold text-white mt-0.5">
+          Quantitative Risk, Extremes & Cointegration
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <!-- Card: EVT & Generalized Pareto -->
+        <div class="quant-model-card glass-panel p-5" data-category="risk" data-tags="evt extreme value theory pot peaks over threshold gpd generalized pareto fat tails">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Extreme Value Theory (EVT) & Peaks-Over-Threshold</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            By the Pickands-Balkema-de Haan theorem, excess losses beyond high threshold $u$ converge to the Generalized Pareto Distribution (GPD).
+          </p>
+
+          <div class="math-block" data-latex="G_{\xi, \beta}(y) = 1 - \left( 1 + \frac{\xi y}{\beta} \right)^{-1/\xi}, \quad \text{CVaR}_\alpha = \frac{\text{VaR}_\alpha}{1 - \xi} + \frac{\beta - \xi u}{1 - \xi}">
+            <button class="copy-math-btn" data-latex="G_{\xi, \beta}(y) = 1 - \left( 1 + \frac{\xi y}{\beta} \right)^{-1/\xi}, \quad \text{CVaR}_\alpha = \frac{\text{VaR}_\alpha}{1 - \xi} + \frac{\beta - \xi u}{1 - \xi}">Copy LaTeX</button>
+            $$G_{\xi, \beta}(y) = 1 - \left( 1 + \frac{\xi y}{\beta} \right)^{-1/\xi} \quad (y = x - u > 0)$$
+            $$\text{CVaR}_\alpha = \frac{\text{VaR}_\alpha}{1 - \xi} + \frac{\beta - \xi u}{1 - \xi}$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• Shape $\xi > 0$:</span> Fréchet heavy-tailed financial returns</div>
+            <div><span class="text-zinc-200">• Scale $\beta$:</span> Tail volatility scale above threshold $u$</div>
+            <div><span class="text-zinc-200">• Coherent Risk:</span> Expected Shortfall (CVaR) satisfies subadditivity</div>
+          </div>
+
+          <div class="card-graph-wrap">
+            <canvas id="graph-evt" class="card-graph-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Card: Copulas & Non-Linear Tail Dependency -->
+        <div class="quant-model-card glass-panel p-5" data-category="risk" data-tags="copula tail dependence clayton gumbel student t sklars theorem systemic risk">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-display font-bold text-base text-white">Copula Theory & Tail Crash Dependency</h3>
+            <button class="text-[10px] font-mono text-zinc-400 hover:text-white transition-colors" data-bibtex="general">BibTeX</button>
+          </div>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            By Sklar's Theorem, decomposes joint distributions into marginals and copula $C$ to measure systemic tail crash correlation.
+          </p>
+
+          <div class="math-block" data-latex="F(\mathbf{x}) = C(u_1, \dots, u_d), \quad \lambda_L = 2 t_{\nu+1}\left( -\sqrt{\frac{(\nu+1)(1-\rho)}{1+\rho}} \right)">
+            <button class="copy-math-btn" data-latex="F(\mathbf{x}) = C(u_1, \dots, u_d), \quad \lambda_L = 2 t_{\nu+1}\left( -\sqrt{\frac{(\nu+1)(1-\rho)}{1+\rho}} \right)">Copy LaTeX</button>
+            $$F(\mathbf{x}) = C(u_1, \dots, u_d), \quad \lambda_L = 2 t_{\nu+1}\left( -\sqrt{\frac{(\nu+1)(1-\rho)}{1+\rho}} \right)$$
+          </div>
+
+          <div class="space-y-1 text-xs text-zinc-400 font-mono mt-2">
+            <div><span class="text-zinc-200">• Student-t Copula:</span> Exhibits lower tail dependence $\lambda_L > 0$ during crashes</div>
+            <div><span class="text-zinc-200">• Gaussian Copula:</span> Asymptotically tail-independent ($\lambda_L = 0$); understates systemic risk</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- RESEARCH PUBLICATIONS & INSTITUTIONAL WORKING PAPERS -->
+    <!-- ========================================================================= -->
+    <section id="publications" class="space-y-4">
+      <div class="border-b border-white/10 pb-3">
+        <div class="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
+          <span>Peer-Reviewed Foundations • Working Papers</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-display font-bold text-white mt-0.5">
+          Research Publications & Theoretical Foundations
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+        <div class="glass-panel p-5">
+          <div class="text-[10px] font-mono text-zinc-500 mb-1">WP-2008-01 • Microstructure</div>
+          <h3 class="font-display font-bold text-white text-sm mb-1.5">High-Frequency Limit Order Book Dynamics & Inventory Control</h3>
+          <p class="text-xs text-zinc-400 mb-3 leading-relaxed">
+            Analytical solution to Hamilton-Jacobi-Bellman stochastic optimal control equations for continuous quote placement under inventory risk aversion.
+          </p>
+          <div class="text-[11px] font-mono text-zinc-500">
+            Reference: Avellaneda & Stoikov (2008)
+          </div>
+        </div>
+
+        <div class="glass-panel p-5">
+          <div class="text-[10px] font-mono text-zinc-500 mb-1">WP-2000-02 • Execution</div>
+          <h3 class="font-display font-bold text-white text-sm mb-1.5">Optimal Liquidation of Portfolio Transactions & Impact Frontiers</h3>
+          <p class="text-xs text-zinc-400 mb-3 leading-relaxed">
+            Derivation of the efficient execution frontier through calculus of variations, trading trajectory optimization, and permanent vs. temporary impact separation.
+          </p>
+          <div class="text-[11px] font-mono text-zinc-500">
+            Reference: Almgren & Chriss (2000)
+          </div>
+        </div>
+
+        <div class="glass-panel p-5">
+          <div class="text-[10px] font-mono text-zinc-500 mb-1">WP-2002-03 • Volatility</div>
+          <h3 class="font-display font-bold text-white text-sm mb-1.5">Managing Smile Risk: Asymptotic Implied Volatility Expansions</h3>
+          <p class="text-xs text-zinc-400 mb-3 leading-relaxed">
+            Singular perturbation analysis yielding closed-form asymptotic expressions for the SABR stochastic volatility smile and skew surface curvature.
+          </p>
+          <div class="text-[11px] font-mono text-zinc-500">
+            Reference: Hagan, Kumar, Lesniewski & Woodward (2002)
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- UNDERSTATED QUANT CLI TERMINAL WINDOW -->
+  <div id="quant-terminal" class="terminal-collapsed">
+    <div class="terminal-header">
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 rounded-full bg-zinc-400"></span>
+        <span class="font-mono text-xs text-zinc-300 font-semibold">VSI Quantitative Terminal</span>
+      </div>
+      <button id="terminal-close" class="text-zinc-500 hover:text-white text-xs font-mono p-1">✕</button>
+    </div>
+    <div id="terminal-body" class="terminal-body">
+      <div class="text-zinc-400">VSI Quantitative Modeling Environment.</div>
+      <div class="text-zinc-500">Type <span class="text-zinc-300 font-semibold">help</span> to view available mathematical routines and commands.</div>
+    </div>
+    <div class="terminal-input-wrap">
+      <span class="text-zinc-500 font-mono text-xs mr-2">vsi$</span>
+      <input type="text" id="terminal-input" class="terminal-input" placeholder="Type command (e.g. 'help', 'simulate as', 'regime crisis', 'bibtex as')...">
+    </div>
+  </div>
+
+  <!-- FLOATING TERMINAL TOGGLE BUTTON -->
+  <button id="terminal-fab" class="terminal-fab">
+    <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+    <span>Quant CLI</span>
+  </button>
+
+  <!-- FOOTER -->
+  <footer class="mt-16 border-t border-white/10 bg-[#07080a] py-10 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        
+        <div class="flex items-center space-x-2.5">
+          <div class="w-7 h-7 rounded bg-zinc-900 border border-zinc-700 flex items-center justify-center text-zinc-300">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 100 100" fill="none">
+              <path d="M20 30L40 70L55 45L70 70L80 50" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="font-display font-semibold text-xs text-white">VSI — Institute for Stochastic Intelligence</div>
+            <div class="text-[10.5px] text-zinc-400 font-mono">Open Quantitative Research & High-Frequency Mathematics</div>
+          </div>
+        </div>
+
+        <div class="text-[11px] font-mono text-zinc-400 text-center md:text-right space-y-0.5">
+          <div>Avellaneda & Stoikov (2008) • Almgren & Chriss (2000) • Hagan et al. (2002)</div>
+          <div>Open Mathematical Formulations • Zero Proprietary Trading Code • MIT Open License</div>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) {
+        window.lucide.createIcons();
+      }
+    });
+  </script>
+</body>
+</html>
